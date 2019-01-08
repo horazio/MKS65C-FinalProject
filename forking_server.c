@@ -5,8 +5,11 @@ void subserver(int from_client);
 
 int main() {
 
+
+
   int listen_socket;
   int f;
+
   listen_socket = server_setup();
 
   while (1) {
