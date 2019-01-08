@@ -1,7 +1,28 @@
 #include "cras.h"
 
 char Deck[52];
+int Player_Num;
 
+struct player{
+  char * hand;
+}
+
+void Add_Player() {
+  Player_Num++;
+}
+
+void Remove_Player(){
+  Player_Num--;
+}
+
+void Deal() {
+    int i = Player_Num;
+    while(i > 0) {
+
+      i--;
+    }
+
+}
 
 void Print_Card(int card){
 
@@ -12,6 +33,12 @@ void Print_Card(int card){
   char * nums[13] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
 
   printf("%s%s\n", nums[num], suits[suit]);
+}
+
+void Print_Hand(struct player) {
+  printf("Top Card:");
+  Print_Card(player.hand);
+
 }
 
 void Print_Deck() {
