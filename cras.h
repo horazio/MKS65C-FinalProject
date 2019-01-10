@@ -12,12 +12,30 @@
 #include <sys/types.h>
 
 char Deck[52];
+int Player_Num;
+
+//Player type (has a hand, handsize, and name) - possibly username & password
+struct player {
+  char hand[13];
+  char size;
+  char * name;
+};
+
+void Add_Player();
+
+void Remove_Player();
 
 void Deal();
 
-void Hit();
+void Hit(struct player);
 
-void Stick();
+void Stick(struct player);
+
+void Print_Card(char);
+
+void Print_Hand();
+
+void Print_Deck();
 
 void Server_Handshake();
 
@@ -27,8 +45,6 @@ void New_Server();
 
 void Reset_Game();
 
-void Shuffle_Deck();
-
 void Initialize_Deck();
 
-void Print_Card(int);
+void Shuffle_Deck();
