@@ -2,36 +2,47 @@
 
 void process(char *s);
 void subserver(int from_client);
-char * ports = {"9002", "9003", "9004", "9005"};
+char * ports[] = {"9002", "9003", "9004", "9005"};
 
 int main() {
   
-  
+  int eternal_socket;
   int listen_socket;
+  int client_socket;
   int f;
   struct player playas[4];
   int i = 0;
-  int fd[2];
-  char buff[BUFFER_SIZE];
- 
-  pipe(fd);
   
-  if(fork()){
-    while(1){
-    read(fd[READ], buff, BUFFER_SIZE);
-      
+  eternal_socket = server_setup("9001");  
+  printf("Waiting for four players\n");
+  while(i < 2){
     
-    }  
-  }else{
-    close(fd[READ]);
-    while(1){
-      listen_socket = server_setup("9001");
-      write(client_socket, buffer, sizeof(buffer));
-      write(fd[WRITE], "yeet", 5);
-      
-    }
+    client_socket = server_connect(eternal_socket);
+    write(client_socket, ports[i], 5);
+    listen_socket = server_setup(ports[i]);
+    client_socket = server_connect(listen_socket);
     
+    playas[i].mySock =  listen_socket;
+    playas[i].clySock = client_socket;
+    
+    printf("Just added a new player to the game\n");
+    
+    i++;
   }
+  
+  printf("Something %d, %d\n", playas[1].mySock, playas[1].clySock);
+  printf("Something %d, %d\n", playas[2].mySock, playas[2].clySock);
+  printf("Something %d, %d\n", playas[3].mySock, playas[3].clySock);
+  printf("Something %d, %d\n", playas[4].mySock, playas[4].clySock);
+ 
+    
+  
+      
+      
+      
+    
+    
+  
   
   
 
@@ -40,14 +51,6 @@ int main() {
   
   while (1) {
     
-    int client_socket = server_connect(listen_socket);
-    
-    playas[i].mySock =  listen_socket;
-    playas[i].clySock = client_socket;
-    i++;
-    listen_socket = server_setup("9002");
-    
-    printf("Just added a new mf player to the game\n");
     
     /*
     f = fork();
