@@ -18,7 +18,8 @@
 #define BUFFER_SIZE 256
 #define PORT "9001"
 #define TEST_IP "127.0.0.1"
-
+#define READ 0
+#define WRITE 1
 
 char Deck[52];
 int Player_Num;
