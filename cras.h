@@ -28,6 +28,8 @@ struct player {
   char hand[13];
   char size;
   char * name;
+  int clySock;
+  int mySock;
 };
 
 void Add_Player();
@@ -62,6 +64,6 @@ void Shuffle_Deck();
 void error_check(int i, char *s);
 int server_setup();
 int server_connect(int sd);
-int client_setup(char * server);
+int client_setup(char * server, char * port);
 
 

@@ -4,23 +4,35 @@ void process(char *s);
 void subserver(int from_client);
 
 int main() {
-
-
-
+  
+  
   int listen_socket;
   int f;
-
-  listen_socket = server_setup();
+  struct player playas[4];
+  int i = 0;
+  
+  listen_socket = server_setup("9001");
 
   while (1) {
-
+    
     int client_socket = server_connect(listen_socket);
+    
+    playas[i].mySock =  listen_socket;
+    playas[i].clySock = client_socket;
+    i++;
+    listen_socket = server_setup("9002");
+    
+    printf("Just added a new mf player to the game\n");
+    
+    /*
     f = fork();
     if (f == 0)
       subserver(client_socket);
     else
       close(client_socket);
+  */
   }
+  
 }
 
 void subserver(int client_socket) {

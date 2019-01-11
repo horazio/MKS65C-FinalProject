@@ -16,7 +16,7 @@ void error_check( int i, char *s ) {
 
   returns the socket descriptor
   =========================*/
-int server_setup() {
+int server_setup(char * port) {
   int sd, i;
 
   //create the socket
@@ -30,7 +30,7 @@ int server_setup() {
   hints->ai_family = AF_INET;  //IPv4 address
   hints->ai_socktype = SOCK_STREAM;  //TCP socket
   hints->ai_flags = AI_PASSIVE;  //Use all valid addresses
-  getaddrinfo(NULL, PORT, hints, &results); //NULL means use local address
+  getaddrinfo(NULL, port, hints, &results); //NULL means use local address
 
   //bind the socket to address and port
   i = bind( sd, results->ai_addr, results->ai_addrlen );
@@ -71,6 +71,7 @@ int server_connect(int sd) {
   return client_socket;
 }
 
+
 /*=========================
   client_setup
   args: int * to_server
@@ -82,7 +83,7 @@ int server_connect(int sd) {
 
   returns the file descriptor for the socket
   =========================*/
-int client_setup(char * server) {
+int client_setup(char * server, char * port) {
   int sd, i;
 
   //create the socket
@@ -96,7 +97,7 @@ int client_setup(char * server) {
   hints = (struct addrinfo *)calloc(1, sizeof(struct addrinfo));
   hints->ai_family = AF_INET;  //IPv4
   hints->ai_socktype = SOCK_STREAM;  //TCP socket
-  getaddrinfo(server, PORT, hints, &results);
+  getaddrinfo(server, port, hints, &results);
 
   //connect to the server
   //connect will bind the socket for us
