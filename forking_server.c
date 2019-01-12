@@ -4,11 +4,14 @@ void process(char *s);
 void subserver(int from_client);
 char * ports[] = {"9002", "9003", "9004", "9005"};
 
-char * deck = Initialize_Deck();
+
 
 int main() {
   
-  int num_players = MAX_PLAYERS;
+  int * deck= Initialize_Deck();
+  //Print_Deck(deck);
+  
+  int num_players = 2;
   int eternal_socket;
   int listen_socket;
   int client_socket;
@@ -38,12 +41,15 @@ int main() {
   }
   
   
+  deck = Shuffle_Deck(deck);
+
+  //Print_Deck(deck);
   
-  for(i = 0; i < num_players; i++){
+  //for(i = 0; i < num_players; i++){
     
     
     
-  }
+  //}
   
   
   /*

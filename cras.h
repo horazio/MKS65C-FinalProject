@@ -53,7 +53,7 @@ void Print_Card(char);
 
 void Print_Hand();
 
-void Print_Deck();
+void Print_Deck(int *);
 
 void Server_Handshake();
 
@@ -63,9 +63,9 @@ void New_Server();
 
 void Reset_Game();
 
-char * Initialize_Deck();
+int * Initialize_Deck();
 
-void Shuffle_Deck();
+int * Shuffle_Deck();
 
 //From demo
 void error_check(int i, char *s);

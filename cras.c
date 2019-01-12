@@ -1,7 +1,6 @@
 #include "cras.h"
 
-//Deck of Card (chars)
-char Deck[52];
+/*
 
 //Number of players in the game (up to 4)
 int Player_Num;
@@ -81,17 +80,6 @@ void Stick(struct player PlayerName){
 
 }
 
-//Prints one card from card ID#
-void Print_Card(char card){
-
-  char suit = card/13;
-  char num  = card%13;
-
-  char * suits[4] = {"♠","♥","♣","♦"};
-  char * nums[13] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
-
-  printf("%s%s\n", nums[num], suits[suit]);
-}
 
 //Prints a player's hand
 void Print_Hand(struct player playerName) {
@@ -106,18 +94,42 @@ void Print_Hand(struct player playerName) {
 
 }
 
+
+*/
+
+
+
+//Prints one card from card ID#
+void Print_Card(char card){
+
+  char suit = card/13;
+  char num  = card%13;
+
+  char * suits[4] = {"♠","♥","♣","♦"};
+  char * nums[13] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
+
+  printf("%s%s\n", nums[num], suits[suit]);
+}
+
+
 //Prints the entire Deck (Debug only)
-void Print_Deck() {
+void Print_Deck(int * Deck) {
   int i = 0;
   while (i<52){
+    //printf("%d\n", Deck[i]);
     Print_Card(Deck[i]);
+    //printf("something\n");
     i++;
   }
 }
 
+
+
+
 //Sets the deck to Frech out of pack order
-char * Initialize_Deck() {
-  char i = 0;
+int * Initialize_Deck() {
+  int * Deck = malloc(sizeof(int)*52);
+  int i = 0;
   while (i < 52) {
     Deck[i] = i;
     i++;
@@ -125,8 +137,11 @@ char * Initialize_Deck() {
   return Deck;
 }
 
-//Randomnly shuffles deck
-void Shuffle_Deck() {
+
+
+
+//Shuffles deck
+int * Shuffle_Deck(int * Deck) {
   printf("Shuffling...\n");
   srand(time(NULL));
   int i = 0;
@@ -141,30 +156,9 @@ void Shuffle_Deck() {
     Deck[rand0] = Deck[rand1];
     Deck[rand1] = help;
 
+    //printf("switching %s and %s\n", Print_Card(Deck[rand0], Print_Card(Deck[rand1]);
     i++;
   }
-}
-
-
-//Tester (debug only)
-int main(int argc, char const *argv[]) {
-  Initialize_Deck();
-  printf("Begin\n");
-  Print_Deck();
-  printf("------------------------\n");
-  Shuffle_Deck();
-  printf("------------------------\n");
-  Print_Deck();
-  printf("------------------------\n");
-  Initialize_Deck();
-  Print_Deck();
-  printf("------------------------\n");
-  Print_Card(0);
-  struct player Cooper;
-  Player_List[0] = Cooper;
-  Deal();
-  strcpy(Cooper.name, "Cooper");
-  Print_Hand(Cooper);
-
-  return 0;
+  //printf("something\n");
+  return Deck;
 }
