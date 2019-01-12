@@ -2,7 +2,11 @@
 
 void error_check( int i, char *s ) {
   if ( i < 0 ) {
-    printf("[%s] error %d: %s\n", s, errno, strerror(errno) );
+    if(errno == 111){
+      printf("Sorry no servers are availible at this time\n");
+    }else{
+      printf("[%s] error %d: %s\n", s, errno, strerror(errno) );
+    }
     exit(1);
   }
 }

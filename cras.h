@@ -21,16 +21,22 @@
 #define READ 0
 #define WRITE 1
 
+#define MAX_PLAYERS 4
+
 char Deck[52];
 int Player_Num;
 
-//Player type (has a hand, handsize, and name) - possibly username & password
+//Player type (has a hand, handsize, name and Number) - possibly username & password
 struct player {
   char hand[13];
   char size;
   char * name;
+
   int clySock;
   int mySock;
+
+  char num;
+
 };
 
 void Add_Player();

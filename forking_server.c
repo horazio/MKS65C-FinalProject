@@ -3,6 +3,7 @@
 void process(char *s);
 void subserver(int from_client);
 char * ports[] = {"9002", "9003", "9004", "9005"};
+//void listen()
 
 int main() {
   
@@ -29,12 +30,12 @@ int main() {
     
     i++;
   }
-  
+  /*
   printf("Something %d, %d\n", playas[1].mySock, playas[1].clySock);
   printf("Something %d, %d\n", playas[2].mySock, playas[2].clySock);
   printf("Something %d, %d\n", playas[3].mySock, playas[3].clySock);
   printf("Something %d, %d\n", playas[4].mySock, playas[4].clySock);
- 
+  */
     
   
       

@@ -6,14 +6,43 @@ char Deck[52];
 //Number of players in the game (up to 4)
 int Player_Num;
 
+//Player List
+char * Player_List[4];
+
 
 //Adds player into game
-void Add_Player() {
+void Add_Player(char * player) {
+
+  struct player name;
+  name.name = player;
+
+  //if game is full then cant join game
+  if(Player_Num = MAX_PLAYERS) {
+    printf("Too Many Players\n");
+    exit(1);
+  }
+
+  //Assign a number to the player
+  name.num = Player_Num;
+
+  //Insert the player in the list
+  Player_List[name.num] = name.name;
   Player_Num++;
 }
 
 //Removes player from game
-void Remove_Player(){
+void Remove_Player(struct player name){
+
+  //Sets position to empty
+  Player_List[name.num] = NULL;
+
+  //Moves Players w/ a higher number down a spot
+  while(name.num < 3) {
+    Player_List[name.num] = Player_List[name.num++];
+  }
+
+  //Sets last spot as open
+  Player_List[name.num] = NULL;
   Player_Num--;
 }
 
@@ -22,7 +51,12 @@ void Deal() {
   printf("Dealing...\n");
   srand(time(NULL));
     int i = Player_Num;
+    int card = 0;
     while(i > 0) {
+      struct player dealt;
+      dealt = Player_List[i];
+      //dealt.hand[i] Deck[card++];
+
       i--;
     }
 
