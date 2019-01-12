@@ -30,7 +30,7 @@ int Player_Num;
 struct player {
   char hand[13];
   char size;
-  char * name;
+  char name[256];
 
   int clySock;
   int mySock;

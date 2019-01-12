@@ -36,6 +36,7 @@ int server_setup(char * port) {
   hints->ai_flags = AI_PASSIVE;  //Use all valid addresses
   getaddrinfo(NULL, port, hints, &results); //NULL means use local address
 
+  
   //bind the socket to address and port
   i = bind( sd, results->ai_addr, results->ai_addrlen );
   error_check( i, "server bind" );
@@ -63,6 +64,7 @@ int server_setup(char * port) {
   returns the socket descriptor for the new socket connected
   to the client.
   =========================*/
+
 int server_connect(int sd) {
   int client_socket;
   socklen_t sock_size;
