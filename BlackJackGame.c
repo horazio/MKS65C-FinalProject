@@ -7,14 +7,17 @@ char Deck[52];
 int Player_Num;
 
 //Player List
-char * Player_List[4];
+struct player Player_List[4];
+
+//Number of Cards in play
+char Cards_Dealt;
 
 
 //Adds player into game
 void Add_Player(char * player) {
 
   struct player name;
-  name.name = player;
+  strcpy(name.name, player);
 
   //if game is full then cant join game
   if(Player_Num = MAX_PLAYERS) {
@@ -26,40 +29,46 @@ void Add_Player(char * player) {
   name.num = Player_Num;
 
   //Insert the player in the list
-  Player_List[name.num] = name.name;
+  Player_List[name.num] = name;
   Player_Num++;
 }
 
 //Removes player from game
-void Remove_Player(struct player name){
+// void Remove_Player(struct player name){
 
-  //Sets position to empty
-  Player_List[name.num] = NULL;
+//   //Sets position to empty
+//   Player_List[name.num] = NULL;
 
-  //Moves Players w/ a higher number down a spot
-  while(name.num < 3) {
-    Player_List[name.num] = Player_List[name.num++];
-  }
+//   //Moves Players w/ a higher number down a spot
+//   while(name.num < 3) {
+//     Player_List[name.num] = Player_List[name.num++];
+//   }
 
-  //Sets last spot as open
-  Player_List[name.num] = NULL;
-  Player_Num--;
-}
+//   //Sets last spot as open
+//   Player_List[name.num] = NULL;
+//   Player_Num--;
+// }
 
-//Deals card to all players NOT DONE YET
+//Deals card to all players
 void Deal() {
+  Shuffle_Deck();
   printf("Dealing...\n");
-  srand(time(NULL));
-    int i = Player_Num;
-    int card = 0;
-    while(i > 0) {
-      struct player dealt;
-      dealt = Player_List[i];
-      //dealt.hand[i] Deck[card++];
-
-      i--;
+  
+  int i = Player_Num;
+  while(i >= 0) {
+    
+    struct player dealt;
+    dealt = Player_List[i];
+    
+    int j = 0;
+    while (j < 2) {
+      dealt.hand[j] = Deck[Cards_Dealt];
+      dealt.size++;
+      Cards_Dealt++;
+      j++;
     }
-
+    i--;
+  }
 }
 
 //give player another card
@@ -107,12 +116,13 @@ void Print_Deck() {
 }
 
 //Sets the deck to Frech out of pack order
-void Initialize_Deck() {
+char * Initialize_Deck() {
   int i = 0;
   while (i < 52) {
     Deck[i] = i;
     i++;
   }
+  return Deck;
 }
 
 //Randomnly shuffles deck
@@ -151,13 +161,9 @@ int main(int argc, char const *argv[]) {
   printf("------------------------\n");
   Print_Card(0);
   struct player Cooper;
-  Cooper.size = 5;
-  Cooper.hand[0] = 9;
-  Cooper.hand[1] = 30;
-  Cooper.hand[2] = 18;
-  Cooper.hand[3] = 48;
-  Cooper.hand[4] = 3;
-  Cooper.name = "Cooper";
+  Player_List[0] = Cooper;
+  Deal();
+  strcpy(Cooper.name, "Cooper");
   Print_Hand(Cooper);
 
   return 0;
