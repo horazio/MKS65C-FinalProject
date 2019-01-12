@@ -63,7 +63,7 @@ void New_Server();
 
 void Reset_Game();
 
-char Initialize_Deck();
+char * Initialize_Deck();
 
 void Shuffle_Deck();
 
