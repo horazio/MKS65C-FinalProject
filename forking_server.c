@@ -18,6 +18,10 @@ int main() {
   int client_socket;
   int f;
   int i = 0;
+ 
+  char * screen = malloc(sizeof(char) * BUFFER_SIZE);
+  
+  strcpy(screen, "-----------------------------------------------------\n");
   
   struct player playas[num_players];
   for(i = 0; i < num_players; i++){
@@ -42,7 +46,6 @@ int main() {
     read(playas[i].clySock, buffer, sizeof(buffer));
     strcpy(playas[i].name, buffer);
     printf("Just added %s to the game\n", playas[i].name);
-    
     i++;
   }
   
@@ -56,18 +59,18 @@ int main() {
   //Deal to each Player in num_players
   for(i = 0; i < num_players; i++){
       counter = Deal(&playas[i], counter, deck); 
-      //printf("%d, \n", playas[i].size);
-      //Print_Card(playas[i].hand[0]);
-      //Print_Card(playas[i].hand[1]);
-      //Print_Hand(&playas[i]);
+      Print_Hand(&playas[i], &screen);
+     
   }
   
   
   
   
-  //counter = Hit(&playas[0], counter, deck);
-  //Print_Hand(&playas[0]);
-
+  counter = Hit(&playas[0], counter, deck);
+  Print_Hand(&playas[0], &screen);
+  printf("%s\n", screen);
+  
+  //flawed debugging code
   //Print_Card(playas[0].hand[0]);
   //Print_Card(playas[0].hand[1]);
   //Print_Card(playas[0].hand[2]);

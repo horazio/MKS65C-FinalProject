@@ -48,9 +48,9 @@ int Hit(struct player *, int, int *);
 
 void Stick(struct player *);
 
-void Print_Card(char);
+void Print_Card(char, char * *);
 
-void Print_Hand(struct player *);
+void Print_Hand(struct player *, char * *);
 
 void Print_Deck(int *);
 

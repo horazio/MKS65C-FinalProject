@@ -2,6 +2,17 @@
 
 /*
 
+
+void Print_Deck(int * Deck) {
+  int i = 0;
+  while (i<52){
+    //printf("%d\n", Deck[i]);
+    Print_Card(Deck[i]);
+    //printf("something\n");
+    i++;
+  }
+}
+
 //Number of players in the game (up to 4)
 int Player_Num;
 
@@ -71,20 +82,38 @@ int Hit(struct player * jeff, int counter, int * Deck){
 
 
 //Prints a player's hand
-void Print_Hand(struct player * jeff) {
-  printf("%s's Hand: ", jeff -> name);
+void Print_Hand(struct player * jeff, char * * ans) {
+  strcat(*ans, jeff -> name);
+  strcat(*ans, ": ");
+
   if(jeff -> size == 0){
-    printf("Empty\n");
+    strcat(*ans, "Empty\n");
   }
-  Print_Card(jeff -> hand[0]);
+  
+  Print_Card(jeff -> hand[0], ans);
+  
   int i;
   for(i = 1; i < jeff -> size; i++){
-    printf("* ");
+    strcat(*ans, "* ");
   }
- printf("\n");
+  strcat(*ans, "\n");
 }
 
 
+
+//Prints one card from card ID#
+void Print_Card(char card, char * * ans){
+  char suit = card/13;
+  char num  = card%13;
+
+  char * suits[4] = {"♠","♥","♣","♦"};
+  char * nums[13] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
+ 
+  strcat(*ans, nums[num]);
+  strcat(*ans, suits[suit]);
+  strcat(*ans, " ");
+  
+}
 
 
 
@@ -106,33 +135,6 @@ int Deal(struct player * jeff, int counter, int * Deck) {
   }
   return counter;  
 }
-
-
-
-//Prints one card from card ID#
-void Print_Card(char card){
-
-  char suit = card/13;
-  char num  = card%13;
-
-  char * suits[4] = {"♠","♥","♣","♦"};
-  char * nums[13] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
-
-  printf("%s%s ", nums[num], suits[suit]);
-}
-
-
-//Prints the entire Deck (Debug only)
-void Print_Deck(int * Deck) {
-  int i = 0;
-  while (i<52){
-    //printf("%d\n", Deck[i]);
-    Print_Card(Deck[i]);
-    //printf("something\n");
-    i++;
-  }
-}
-
 
 
 
