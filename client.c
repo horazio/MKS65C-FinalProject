@@ -34,6 +34,19 @@ int main(int argc, char **argv) {
   printf("\033[H\033[J");
   printf("%s\n", buffer);
   
+  printf("Would you like to hit or stick? (h/s)\n"); 
+  fgets(buffer, sizeof(buffer), stdin);
+  *strchr(buffer, '\n') = 0;
+  
+  while(strcmp(buffer, "s") && strcmp(buffer, "h")) {
+    printf("Need I remind you: (h/s)\n"); 
+    fgets(buffer, sizeof(buffer), stdin);
+    *strchr(buffer, '\n') = 0;
+  }
+  
+  write(server_socket, buffer, sizeof(buffer));
+  
+ 
   
   while (1) {
     

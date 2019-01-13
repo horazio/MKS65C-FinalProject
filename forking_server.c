@@ -70,15 +70,23 @@ int main() {
             Print_Hand(&playas[j], &screen);
          }  
        }
-       strcat(screen, "\n\n My Hand: ");
+       strcat(screen, "\n\nMy Hand: ");
        for(j = 0; j < playas[i].size; j++){
           Print_Card(playas[i].hand[j], &screen);  
        }
        strcat(screen, "\n-----------------------------------------------------\n");
  
        write(playas[i].clySock, screen, strlen(screen));
-       
+       read(playas[i].clySock, buffer, sizeof(buffer));
+       if(!strcmp(buffer, "h")){
+         printf("hit\n");
+       }else{
+         printf("stit\n");
+       }
+     
        strcpy(screen, "-----------------------------------------------------\n");
+     
+     
   }
 
 
