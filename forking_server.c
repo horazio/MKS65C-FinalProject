@@ -20,7 +20,10 @@ int main() {
   int i = 0;
   int j = 0;
  
-  char * screen = malloc(sizeof(char) * BUFFER_SIZE);
+  char * screen = calloc(sizeof(char), BUFFER_SIZE * 8);
+  
+  char * buffer = calloc(sizeof(char), BUFFER_SIZE * 8);
+  //char * screenTemp = malloc(sizeof(char) * BUFFER_SIZE * 8);
   
   strcpy(screen, "-----------------------------------------------------\n");
   
@@ -31,7 +34,7 @@ int main() {
   
   
   i = 0;
-  char buffer[BUFFER_SIZE];
+  
   
   
   eternal_socket = server_setup("9001");  
@@ -44,7 +47,7 @@ int main() {
     client_socket = server_connect(listen_socket);
     playas[i].mySock =  listen_socket;
     playas[i].clySock = client_socket;
-    read(playas[i].clySock, buffer, sizeof(buffer));
+    read(playas[i].clySock, buffer, BUFFER_SIZE * 8);
     strcpy(playas[i].name, buffer);
     printf("Just added %s to the game\n", playas[i].name);
     i++;
@@ -63,8 +66,12 @@ int main() {
   for(i = 0; i < num_players; i++){
       counter = Deal(&playas[i], counter, deck);  
   }
+    
   
    for(i = 0; i < num_players; i++){
+       
+     
+      //Screens are prepared
        for(j = 0; j < num_players; j++){
          if(i != j){
             Print_Hand(&playas[j], &screen);
@@ -74,21 +81,37 @@ int main() {
        for(j = 0; j < playas[i].size; j++){
           Print_Card(playas[i].hand[j], &screen);  
        }
-       strcat(screen, "\n-----------------------------------------------------\n");
+       
+       
  
        write(playas[i].clySock, screen, strlen(screen));
-       read(playas[i].clySock, buffer, sizeof(buffer));
-       if(!strcmp(buffer, "h")){
-         printf("hit\n");
-       }else{
-         printf("stit\n");
+       
+       memset(buffer, 0, BUFFER_SIZE * 8);
+       read(playas[i].clySock, buffer, BUFFER_SIZE * 8);
+       
+       //printf("-->%s<--\n", buffer);
+     
+     
+       while(!strcmp(buffer, "h")){
+         
+         printf("%s chose to hit\n", playas[i].name);
+         counter = Hit(&playas[i], counter, deck);
+         Print_Card(playas[i].hand[j++], &screen);
+         
+         //strcpy(screenTemp, screen);
+         //strcat(screen, "\n-----------------------------------------------------\n");
+         
+         //printf("%s\n", screen);
+         
+         write(playas[i].clySock, screen, strlen(screen));
+         
+         memset(buffer, 0, BUFFER_SIZE * 8);
+         read(playas[i].clySock, buffer, BUFFER_SIZE * 8);
        }
+       printf("%s chose to stick\n", playas[i].name);
      
        strcpy(screen, "-----------------------------------------------------\n");
-     
-     
   }
-
 
 
   
@@ -103,52 +126,7 @@ int main() {
   
   printf("Something %s, %d\n", playas[2].name, playas[2].clySock);
   printf("Something %s, %d\n", playas[3].name, playas[3].clySock);
-  */
-   
-      
-      
-    
-    
-  
-  
-  
-
-  
-  
-  
-  while (1) {
-    
-    
-    /*
-    f = fork();
-    if (f == 0)
-      subserver(client_socket);
-    else
-      close(client_socket);
-  */
-  }
+  */ 
   
 }
 
-void subserver(int client_socket) {
-  char buffer[BUFFER_SIZE];
-
-  while (read(client_socket, buffer, sizeof(buffer))) {
-
-    printf("[subserver %d] received: [%s]\n", getpid(), buffer);
-    process(buffer);
-    write(client_socket, buffer, sizeof(buffer));
-  }//end read loop
-  close(client_socket);
-  exit(0);
-}
-
-void process(char * s) {
-  while (*s) {
-    if (*s >= 'a' && *s <= 'z')
-      *s = ((*s - 'a') + 13) % 26 + 'a';
-    else  if (*s >= 'A' && *s <= 'Z')
-      *s = ((*s - 'a') + 13) % 26 + 'a';
-    s++;
-  }
-}
