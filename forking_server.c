@@ -56,13 +56,14 @@ int main() {
   //Deal to each Player in num_players
   for(i = 0; i < num_players; i++){
       counter = Deal(&playas[i], counter, deck); 
-      
       //printf("%d, \n", playas[i].size);
       //Print_Card(playas[i].hand[0]);
       //Print_Card(playas[i].hand[1]);
-      
-      Print_Hand(&playas[i]);
+      //Print_Hand(&playas[i]);
   }
+  
+  
+  
   
   //counter = Hit(&playas[0], counter, deck);
   //Print_Hand(&playas[0]);
