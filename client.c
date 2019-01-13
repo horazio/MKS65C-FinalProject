@@ -26,7 +26,13 @@ int main(int argc, char **argv) {
   strcpy(me.name, buffer);
   write(server_socket, buffer, sizeof(buffer));
   
+  printf("\033[H\033[J");
+  printf("Waiting for others to join...\n");
   
+  read(server_socket, buffer, sizeof(buffer));
+  
+  printf("\033[H\033[J");
+  printf("%s\n", buffer);
   
   
   while (1) {

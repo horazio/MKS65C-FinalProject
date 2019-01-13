@@ -18,6 +18,7 @@ int main() {
   int client_socket;
   int f;
   int i = 0;
+  int j = 0;
  
   char * screen = malloc(sizeof(char) * BUFFER_SIZE);
   
@@ -34,7 +35,7 @@ int main() {
   
   
   eternal_socket = server_setup("9001");  
-  printf("Waiting for four players\n");
+  printf("Waiting for players\n");
   while(i < num_players){
     
     client_socket = server_connect(eternal_socket);
@@ -57,18 +58,31 @@ int main() {
   //Print_Deck(deck);
   
   //Deal to each Player in num_players
+  
+  
   for(i = 0; i < num_players; i++){
-      counter = Deal(&playas[i], counter, deck); 
-      Print_Hand(&playas[i], &screen);
-     
+      counter = Deal(&playas[i], counter, deck);  
   }
   
-  
-  
-  
-  counter = Hit(&playas[0], counter, deck);
-  Print_Hand(&playas[0], &screen);
-  printf("%s\n", screen);
+   for(i = 0; i < num_players; i++){
+       for(j = 0; j < num_players; j++){
+         if(i != j){
+            Print_Hand(&playas[j], &screen);
+         }  
+       }
+       strcat(screen, "\n\n My Hand: ");
+       for(j = 0; j < playas[i].size; j++){
+          Print_Card(playas[i].hand[j], &screen);  
+       }
+       strcat(screen, "\n-----------------------------------------------------\n");
+ 
+       write(playas[i].clySock, screen, strlen(screen));
+       
+       strcpy(screen, "-----------------------------------------------------\n");
+  }
+
+
+
   
   //flawed debugging code
   //Print_Card(playas[0].hand[0]);
