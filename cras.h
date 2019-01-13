@@ -34,24 +34,23 @@ struct player {
 
   int clySock;
   int mySock;
-
-  char num;
-
 };
+
+void Set_Player(struct player *);
 
 void Add_Player();
 
 void Remove_Player();
 
-void Deal();
+int Deal(struct player *, int, int *);
 
-void Hit(struct player);
+void Hit(struct player *);
 
-void Stick(struct player);
+void Stick(struct player *);
 
 void Print_Card(char);
 
-void Print_Hand();
+void Print_Hand(struct player *);
 
 void Print_Deck(int *);
 

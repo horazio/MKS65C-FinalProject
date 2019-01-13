@@ -3,7 +3,7 @@
 void process(char *s);
 void subserver(int from_client);
 char * ports[] = {"9002", "9003", "9004", "9005"};
-
+int counter;
 
 
 int main() {
@@ -11,15 +11,21 @@ int main() {
   int * deck= Initialize_Deck();
   //Print_Deck(deck);
   
+  counter = 0;
   int num_players = 2;
   int eternal_socket;
   int listen_socket;
   int client_socket;
   int f;
-  
+  int i = 0;
   
   struct player playas[num_players];
-  int i = 0;
+  for(i = 0; i < num_players; i++){
+    Set_Player(&playas[i]);
+  }
+  
+  
+  i = 0;
   char buffer[BUFFER_SIZE];
   
   
@@ -43,18 +49,26 @@ int main() {
   
   deck = Shuffle_Deck(deck);
 
+  
+  
   //Print_Deck(deck);
   
-  //for(i = 0; i < num_players; i++){
-    
-    
-    
-  //}
+  //Deal to each Player in num_players
+  for(i = 0; i < num_players; i++){
+      counter = Deal(&playas[i], counter, deck); 
+      
+      //printf("%d, \n", playas[i].size);
+      //Print_Card(playas[i].hand[0]);
+      //Print_Card(playas[i].hand[1]);
+      
+      Print_Hand(&playas[i]);
+  }
   
   
   /*
   printf("Something %s, %d\n", playas[0].name, playas[0].clySock);
   printf("Something %s, %d\n", playas[1].name, playas[1].clySock);
+  
   printf("Something %s, %d\n", playas[2].name, playas[2].clySock);
   printf("Something %s, %d\n", playas[3].name, playas[3].clySock);
   */

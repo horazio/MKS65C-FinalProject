@@ -48,27 +48,7 @@ void Add_Player(char * player) {
 //   Player_Num--;
 // }
 
-//Deals card to all players
-void Deal() {
-  Shuffle_Deck();
-  printf("Dealing...\n");
-  
-  int i = Player_Num;
-  while(i >= 0) {
-    
-    struct player dealt;
-    dealt = Player_List[i];
-    
-    int j = 0;
-    while (j < 2) {
-      dealt.hand[j] = Deck[Cards_Dealt];
-      dealt.size++;
-      Cards_Dealt++;
-      j++;
-    }
-    i--;
-  }
-}
+
 
 //give player another card
 void Hit(struct player playerName){
@@ -81,21 +61,47 @@ void Stick(struct player PlayerName){
 }
 
 
-//Prints a player's hand
-void Print_Hand(struct player playerName) {
-  printf("%s's Hand:\n", playerName.name);
-  char * hand = playerName.hand;
-  int i = 0;
-  while (i < playerName.size) {
-    Print_Card(*hand);
-    hand++;
-    i++;
-  }
-
-}
 
 
 */
+
+
+//Prints a player's hand
+void Print_Hand(struct player * jeff) {
+  printf("%s's Hand:\n", jeff -> name);
+  if(jeff -> size == 0){
+    printf("Empty\n");
+  }
+  Print_Card(jeff -> hand[0]);
+  int i;
+  for(i = 1; i < jeff -> size; i++){
+    printf("* ");
+  }
+ printf("\n");
+}
+
+
+
+
+
+//sets the originial values of player
+void Set_Player(struct player * jeff){
+  jeff -> size = 0;
+}
+
+
+//Deals card to all players
+int Deal(struct player * jeff, int counter, int * Deck) {
+  printf("Dealing to %s...\n", jeff->name);
+  int i = 0;
+  while (i < 2) {
+    jeff->size++;
+    //printf("Sixe: %d\n", jeff -> size);
+    jeff->hand[i] = Deck[counter++];
+    i++;
+  }
+  return counter;  
+}
 
 
 
@@ -108,7 +114,7 @@ void Print_Card(char card){
   char * suits[4] = {"♠","♥","♣","♦"};
   char * nums[13] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
 
-  printf("%s%s\n", nums[num], suits[suit]);
+  printf("%s%s ", nums[num], suits[suit]);
 }
 
 
