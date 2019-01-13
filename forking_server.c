@@ -16,9 +16,9 @@ int main() {
   int eternal_socket;
   int listen_socket;
   int client_socket;
-  int f;
-  int i = 0;
-  int j = 0;
+  int i = 0; // for incremantation
+  int j = 0; // for incrementation
+  int b = 0; //for bust/break
  
   char * screen = calloc(sizeof(char), BUFFER_SIZE * 8);
   
@@ -96,7 +96,17 @@ int main() {
          
          printf("%s chose to hit\n", playas[i].name);
          counter = Hit(&playas[i], counter, deck);
+         
+         
+         
          Print_Card(playas[i].hand[j++], &screen);
+         
+         //TESTING
+         printf("Value: %i\n", Value(&playas[i]));
+         if(Value(&playas[i]) == -1){
+            strcat(screen, "YOU BUSTED\n");
+            b = 1;
+         }
          
          //strcpy(screenTemp, screen);
          //strcat(screen, "\n-----------------------------------------------------\n");
@@ -104,6 +114,8 @@ int main() {
          //printf("%s\n", screen);
          
          write(playas[i].clySock, screen, strlen(screen));
+         
+         if (b == 1) {break;}
          
          memset(buffer, 0, BUFFER_SIZE * 8);
          read(playas[i].clySock, buffer, BUFFER_SIZE * 8);

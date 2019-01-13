@@ -99,6 +99,32 @@ void Print_Hand(struct player * jeff, char * * ans) {
   strcat(*ans, "\n");
 }
 
+int Value(struct player * jeff) {
+  int total = 0; // hand value
+  int i = 0;     // incrementer
+  int aces = 0;  // number of aces in the hand
+  for(i;i < jeff->size; i++) { // for every card in the hand
+    if(jeff->hand[i]%13 == 0) {// its an ace
+      aces++; //add one to the aces counter
+      total += 10; //add ten to the hand value
+    }
+    if(jeff->hand[i]%13 >= 10) { // if it is a face card (not Ace)
+      total -= jeff->hand[i]%13%9; //subtract the amoun over 10 that it is worth
+    }
+    
+    total += jeff->hand[i]%13 + 1; // add card value to the hand value
+  }
+  
+  if (total <= 21) {return total;} // if this is a valid hand return it
+  
+  while(aces) { //if there are any aces
+    total -= 10; //subtract 10 from the hand value
+    if (total <= 21) {return total;} //if the hand is now valid (ace worth 1) then return the value
+  }
+  
+  return -1; // if its a bust return -1
+  
+} 
 
 
 //Prints one card from card ID#

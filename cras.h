@@ -52,6 +52,8 @@ void Print_Card(char, char * *);
 
 void Print_Hand(struct player *, char * *);
 
+int Value(struct player * );
+
 void Print_Deck(int *);
 
 void Server_Handshake();
@@ -65,6 +67,9 @@ void Reset_Game();
 int * Initialize_Deck();
 
 int * Shuffle_Deck();
+
+int Bust(struct player *);
+
 
 //From demo
 void error_check(int i, char *s);
