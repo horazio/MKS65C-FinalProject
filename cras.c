@@ -50,10 +50,7 @@ void Add_Player(char * player) {
 
 
 
-//give player another card
-void Hit(struct player playerName){
 
-}
 
 //end the player's turn
 void Stick(struct player PlayerName){
@@ -65,10 +62,17 @@ void Stick(struct player PlayerName){
 
 */
 
+//The player takes hit
+int Hit(struct player * jeff, int counter, int * Deck){
+  jeff -> hand[jeff -> size++] = Deck[counter++];
+  return counter;
+}
+
+
 
 //Prints a player's hand
 void Print_Hand(struct player * jeff) {
-  printf("%s's Hand:\n", jeff -> name);
+  printf("%s's Hand: ", jeff -> name);
   if(jeff -> size == 0){
     printf("Empty\n");
   }

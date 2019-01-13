@@ -44,7 +44,7 @@ void Remove_Player();
 
 int Deal(struct player *, int, int *);
 
-void Hit(struct player *);
+int Hit(struct player *, int, int *);
 
 void Stick(struct player *);
 

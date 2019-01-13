@@ -64,7 +64,13 @@ int main() {
       Print_Hand(&playas[i]);
   }
   
-  
+  //counter = Hit(&playas[0], counter, deck);
+  //Print_Hand(&playas[0]);
+
+  //Print_Card(playas[0].hand[0]);
+  //Print_Card(playas[0].hand[1]);
+  //Print_Card(playas[0].hand[2]);
+ 
   /*
   printf("Something %s, %d\n", playas[0].name, playas[0].clySock);
   printf("Something %s, %d\n", playas[1].name, playas[1].clySock);
