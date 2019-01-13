@@ -12,7 +12,7 @@ int main() {
   //Print_Deck(deck);
   
   counter = 0;
-  int num_players = 2;
+  int num_players = 4;
   int eternal_socket;
   int listen_socket;
   int client_socket;
@@ -47,6 +47,8 @@ int main() {
     client_socket = server_connect(listen_socket);
     playas[i].mySock =  listen_socket;
     playas[i].clySock = client_socket;
+    
+    memset(buffer, 0, BUFFER_SIZE * 8);
     read(playas[i].clySock, buffer, BUFFER_SIZE * 8);
     strcpy(playas[i].name, buffer);
     printf("Just added %s to the game\n", playas[i].name);
