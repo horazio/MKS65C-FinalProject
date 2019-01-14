@@ -70,6 +70,11 @@ int * Shuffle_Deck();
 
 int Bust(struct player *);
 
+struct player * Winner(struct player * *, int);
+
+int All_Bust(struct player * * , int );
+
+
 
 //From demo
 void error_check(int i, char *s);

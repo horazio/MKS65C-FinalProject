@@ -100,6 +100,7 @@ void Print_Hand(struct player * jeff, char * * ans) {
 }
 
 int Value(struct player * jeff) {
+  if (jeff == NULL) {return -1;}
   int total = 0; // hand value
   int i = 0;     // incrementer
   int aces = 0;  // number of aces in the hand
@@ -109,17 +110,22 @@ int Value(struct player * jeff) {
       total += 10; //add ten to the hand value
     }
     if(jeff->hand[i]%13 >= 10) { // if it is a face card (not Ace)
-      total -= jeff->hand[i]%13%9; //subtract the amoun over 10 that it is worth
+      total -= jeff->hand[i]%13%9; //subtract the amount over 10 that it is worth
     }
     
     total += jeff->hand[i]%13 + 1; // add card value to the hand value
   }
   
+  //printf("Total: %i", total);
+  
   if (total <= 21) {return total;} // if this is a valid hand return it
   
+  //printf("Aces: %i", aces);
+  
   while(aces) { //if there are any aces
-    total -= 10; //subtract 10 from the hand value
+    total -= 10;//subtract 10 from the hand value
     if (total <= 21) {return total;} //if the hand is now valid (ace worth 1) then return the value
+    aces--;
   }
   
   return -1; // if its a bust return -1
@@ -199,4 +205,42 @@ int * Shuffle_Deck(int * Deck) {
   }
   //printf("something\n");
   return Deck;
+}
+
+// returns the a pointer to the player with the winning hand
+struct player * Compare_Hands(struct player * Jeff, struct player * Lisa) {
+  if (Value(Jeff) > Value(Lisa)) {return Jeff;} // Jeff has a better card value
+  if (Value(Jeff) < Value(Lisa)) {return Lisa;} // Lisa has a better card value
+  else { // same card value
+    if(Jeff->size > Lisa->size) {return Lisa;} // Lisa has fewer cards
+    if(Jeff->size < Lisa->size) {return Jeff;} // Jeff has fewer cards
+  }
+  return Jeff; //If the hands are equal then return the first player given
+  
+}
+
+struct player * Winner(struct player * * playas, int num_players) {
+  int i = 0; // incrementer
+  
+  struct player * winner = playas[i]; // set the winner to the first player
+  
+  for(i; i < num_players; i++) { // Cycle through players
+    
+    if (Compare_Hands(playas[i], winner) == playas[i]) { // if this hand is better
+      winner = playas[i]; // the current player is the winner
+    }
+  }
+
+  return winner;
+}
+
+
+int All_Bust(struct player * * playas, int num_players) {
+  int i = 0; // incrementer
+  
+  for (i;i < num_players; i++) { // cycle through players
+    if (Value(playas[i]) > -1) {return 0;} // if its not a bust return 0
+  }
+  
+  return 1; //otherwise return 1
 }

@@ -8,6 +8,65 @@ int counter;
 
 int main() {
   
+  //TESTING FOR VALUE
+  /*
+  struct player Jeff;
+  strcpy(Jeff.name, "Jeff");
+  Jeff.size = 3;
+  Jeff.hand[0] = 8;
+  Jeff.hand[1] = 6;
+  Jeff.hand[2] = 1;
+
+  
+  struct player Lisa;
+  strcpy(Lisa.name, "Lisa");
+  Lisa.size = 4;
+  Lisa.hand[0] = 5;
+  Lisa.hand[1] = 0;
+  Lisa.hand[2] = 1;
+  Lisa.hand[3] = 5;
+  
+  struct player John;
+  strcpy(John.name, "John");
+  John.size = 11;
+  John.hand[0] = 0;
+  John.hand[1] = 0;
+  John.hand[2] = 0;
+  John.hand[3] = 0;
+  John.hand[4] = 1;
+  John.hand[5] = 1;
+  John.hand[6] = 1;
+  John.hand[7] = 1;
+  John.hand[8] = 2;
+  John.hand[9] = 2;
+  John.hand[10] = 2;
+  
+  struct player Carl;
+  strcpy(Carl.name, "Carl");
+  Carl.size = 3;
+  Carl.hand[0] = 12;
+  Carl.hand[1] = 12;
+  Carl.hand[2] = 0;
+  
+  struct player * * people = calloc(sizeof(struct player), 4);
+  people[0] = &Carl;
+  people[1] = &Lisa;
+  people[2] = &John;
+  people[3] = &Jeff;
+  
+  int x = 0;
+  for(x;x < 4;x++) {
+    printf("Value of %s: %i\n", people[x]->name, Value(people[x]));
+  }
+  
+  if (All_Bust(people, 4)) {
+    printf("Nobody wins! :(\n");
+  }
+  
+  printf(">%s< is the winner!\n", Winner(people, 4)->name);
+  
+  */
+  
   int * deck= Initialize_Deck();
   //Print_Deck(deck);
   
@@ -27,7 +86,7 @@ int main() {
   
   strcpy(screen, "-----------------------------------------------------\n");
   
-  struct player playas[num_players];
+  struct player  * playas = calloc(sizeof(struct player), num_players);
   for(i = 0; i < num_players; i++){
     Set_Player(&playas[i]);
   }
@@ -93,6 +152,7 @@ int main() {
        
        //printf("-->%s<--\n", buffer);
      
+       printf("%s's hand value is %i\n", playas[i].name, Value(&playas[i]));
      
        while(!strcmp(buffer, "h")){
          
@@ -104,7 +164,8 @@ int main() {
          Print_Card(playas[i].hand[j++], &screen);
          
          //TESTING
-         printf("Value: %i\n", Value(&playas[i]));
+         printf("%s's hand value is %i\n", playas[i].name, Value(&playas[i]));
+         
          if(Value(&playas[i]) == -1){
             strcat(screen, "YOU BUSTED\n");
             b = 1;
@@ -127,7 +188,17 @@ int main() {
        strcpy(screen, "-----------------------------------------------------\n");
   }
 
-
+ /*
+  printf("asdfasdfasdf\n");
+  if(All_Bust(&playas, num_players)) {
+    printf("Nobody wins!\n");
+  } else {
+    printf("%s is the Winner!\n", Winner(&playas, num_players) -> name);
+  }
+  */
+  
+  
+  
   
   //flawed debugging code
   //Print_Card(playas[0].hand[0]);
