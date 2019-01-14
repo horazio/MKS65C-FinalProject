@@ -6,6 +6,7 @@ char * ports[] = {"9302", "9303", "9304", "9305"};
 int counter;
 
 
+
 int main() {
   
   //TESTING FOR VALUE
@@ -74,6 +75,9 @@ int main() {
   char * screen = calloc(sizeof(char), BUFFER_SIZE * 8);
   
   char * buffer = calloc(sizeof(char), BUFFER_SIZE * 8);
+  
+  
+  struct player * winner;
   //char * screenTemp = malloc(sizeof(char) * BUFFER_SIZE * 8);
   
   strcpy(screen, "-----------------------------------------------------\n");
@@ -113,7 +117,7 @@ int main() {
   
   
   for(i = 0; i < num_players; i++){
-    counter = Deal(playas[i], counter, deck);  
+    counter = Deal(playas[i], counter, deck);
   }
   
   
@@ -153,7 +157,7 @@ int main() {
       printf("%s's hand value is %i\n", playas[i]->name, Value(playas[i]));
       
       if(Value(playas[i]) == -1){
-	        strcat(screen, "YOU BUSTED\n");
+	        strcat(screen, "YOU BUSTED");
 	        b = 1;
       }
       
@@ -185,9 +189,23 @@ int main() {
   if(All_Bust(playas, num_players)) {
     printf("Nobody wins!\n");
   } else {
-    printf("%s is the Winner!\n", Winner(playas, num_players) -> name);
+    winner = Winner(playas, num_players);
+    printf("%s is the Winner!\n", winner -> name);
   }
   
+  
+  for(i = 0; i < num_players; i++){
+    memset(screen, 0, BUFFER_SIZE * 8);
+    
+    if(playas[i] == winner){
+      strcat(screen, "YOU WIN!!");
+    }
+    else{
+      strcat(screen, winner -> name);
+      strcat(screen, " was the winner\n");
+    }
+    write(playas[i] -> clySock, screen, strlen(screen));
+  }
   
   
   while(1){

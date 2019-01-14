@@ -34,6 +34,8 @@ struct player {
 
   int clySock;
   int mySock;
+  
+  int money;
 };
 
 void Set_Player(struct player *);

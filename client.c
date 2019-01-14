@@ -5,7 +5,7 @@ int main(int argc, char **argv) {
   struct player me;
   int server_socket;
   char * buffer = calloc(sizeof(char), BUFFER_SIZE * 8);
-  
+  char decisionBuffer[256];
   
   if (argc == 2){
     //server_socket = client_setup( argv[1]);
@@ -34,42 +34,51 @@ int main(int argc, char **argv) {
   printf("%s\n", buffer);
   
   
-  while(strcmp(buffer, "s")){
-    
+  
+  while(strcmp(decisionBuffer, "s")){
+        
+    memset(buffer, 0, BUFFER_SIZE * 8);
     read(server_socket, buffer, BUFFER_SIZE * 8);
     
     printf("\033[H\033[J");
     printf("%s\n", buffer);
+    printf("-----------------------------------------------------\n");
     
-    memset(buffer, 0, BUFFER_SIZE * 8);
-    
-    printf("Would you like to hit or stick? (h/s)\n"); 
-    fgets(buffer, BUFFER_SIZE * 8, stdin);
-    *strchr(buffer, '\n') = 0;
-    
+
+    if(buffer[strlen(buffer) - 1] == 'D'){
+        printf("YOU LOSE\n");
+        break;
+    }else{  
+      printf("Would you like to hit or stick? (h/s)\n"); 
+      fgets(decisionBuffer, 256, stdin);
+      *strchr(decisionBuffer, '\n') = 0;
+    }
     //printf("-->%s<--\n", buffer);
     
-    while(strcmp(buffer, "s") && strcmp(buffer, "h")) {
+    while(strcmp(decisionBuffer, "s") && strcmp(decisionBuffer, "h")) {
       printf("Need I remind you: (h/s)\n"); 
-      fgets(buffer, BUFFER_SIZE * 8, stdin);
-      *strchr(buffer, '\n') = 0;
+      fgets(decisionBuffer, 256, stdin);
+      *strchr(decisionBuffer, '\n') = 0;
+    }
+    
+    if(!strcmp(decisionBuffer, "s")){
+      printf("\033[H\033[J");
+      printf("%s\n", buffer);
+      printf("-----------------------------------------------------\n");
+      printf("YOU STUCK\n");
     }
     
     //printf("-->>%s<<--\n", buffer);
-    write(server_socket, buffer, strlen(buffer));
-    
+    write(server_socket, decisionBuffer, strlen(decisionBuffer));
     
   }
   
-  while (1) {
+  printf("\nWaiting for other players and determining winner...\n\n");
+  
+  memset(buffer, 0, BUFFER_SIZE * 8);
+  read(server_socket, buffer, BUFFER_SIZE * 8 );
+  
+  printf("%s\n", buffer);
     
-    /*
-      printf("enter data: ");
-      fgets(buffer, sizeof(buffer), stdin);
-      *strchr(buffer, '\n') = 0;
-      write(server_socket, buffer, sizeof(buffer));
-      read(server_socket, buffer, sizeof(buffer));
-      printf("received: [%s]\n", buffer);
-    */
-  }
+  free(buffer);
 }
