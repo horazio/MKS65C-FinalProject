@@ -1,7 +1,7 @@
 #include "cras.h"
 
 int main(int argc, char **argv) {
-
+  
   struct player me;
   int server_socket;
   char * buffer = calloc(sizeof(char), BUFFER_SIZE * 8);
@@ -12,8 +12,8 @@ int main(int argc, char **argv) {
   }
   
   else{
-    server_socket = client_setup( TEST_IP, "9001" );
-    //printf("bound to the 9001 port\n");
+    server_socket = client_setup( TEST_IP, "9301" );
+    //printf("bound to the 9301 port\n");
     read(server_socket, buffer, BUFFER_SIZE * 8 );
     //printf("received, '%s'\n", buffer);
     sleep(.5);
@@ -40,13 +40,13 @@ int main(int argc, char **argv) {
     
     printf("\033[H\033[J");
     printf("%s\n", buffer);
-
+    
     memset(buffer, 0, BUFFER_SIZE * 8);
     
     printf("Would you like to hit or stick? (h/s)\n"); 
     fgets(buffer, BUFFER_SIZE * 8, stdin);
     *strchr(buffer, '\n') = 0;
-  
+    
     //printf("-->%s<--\n", buffer);
     
     while(strcmp(buffer, "s") && strcmp(buffer, "h")) {
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
       fgets(buffer, BUFFER_SIZE * 8, stdin);
       *strchr(buffer, '\n') = 0;
     }
-  
+    
     //printf("-->>%s<<--\n", buffer);
     write(server_socket, buffer, strlen(buffer));
     
@@ -64,12 +64,12 @@ int main(int argc, char **argv) {
   while (1) {
     
     /*
-    printf("enter data: ");
-    fgets(buffer, sizeof(buffer), stdin);
-    *strchr(buffer, '\n') = 0;
-    write(server_socket, buffer, sizeof(buffer));
-    read(server_socket, buffer, sizeof(buffer));
-    printf("received: [%s]\n", buffer);
+      printf("enter data: ");
+      fgets(buffer, sizeof(buffer), stdin);
+      *strchr(buffer, '\n') = 0;
+      write(server_socket, buffer, sizeof(buffer));
+      read(server_socket, buffer, sizeof(buffer));
+      printf("received: [%s]\n", buffer);
     */
   }
 }
