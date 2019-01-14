@@ -77,6 +77,8 @@ struct player * Winner(struct player * *, int);
 int All_Bust(struct player * * , int );
 
 
+void Print_File(char *);
+
 
 //From demo
 void error_check(int i, char *s);

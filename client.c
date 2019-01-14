@@ -2,6 +2,7 @@
 
 int main(int argc, char **argv) {
   
+  
   struct player me;
   int server_socket;
   char * buffer = calloc(sizeof(char), BUFFER_SIZE * 8);

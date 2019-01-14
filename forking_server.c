@@ -59,6 +59,8 @@ int main() {
     printf(">%s< is the winner!\n", Winner(people, 4)->name);
     
   */
+  printf("\033[H\033[J");
+  Print_File("BlackJack.txt");
   
   int * deck = Initialize_Deck();
   //Print_Deck(deck);
@@ -201,8 +203,12 @@ int main() {
       strcat(screen, "YOU WIN!!");
     }
     else{
-      strcat(screen, winner -> name);
-      strcat(screen, " was the winner\n");
+      if(All_Bust(playas, num_players)){
+        strcat(screen, "Everyone busted, there is no winner!\n");
+      }else{
+        strcat(screen, winner -> name);
+        strcat(screen, " is the winner\n");
+      }
     }
     write(playas[i] -> clySock, screen, strlen(screen));
   }
