@@ -151,7 +151,7 @@ void Print_Card(char card, char * * ans){
 
 //sets the originial values of player
 void Set_Player(struct player * jeff){
-  jeff -> size = 0;
+  jeff = calloc(sizeof(struct player), 1);
 }
 
 

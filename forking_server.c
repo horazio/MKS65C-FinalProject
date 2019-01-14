@@ -12,47 +12,39 @@ int main() {
   /*
   struct player Jeff;
   strcpy(Jeff.name, "Jeff");
-  Jeff.size = 3;
-  Jeff.hand[0] = 8;
-  Jeff.hand[1] = 6;
-  Jeff.hand[2] = 1;
+  Jeff.size = 3;     
+  Jeff.hand[0] = 9;
+  Jeff.hand[1] = 1;
+  Jeff.hand[2] = 7;
 
   
   struct player Lisa;
   strcpy(Lisa.name, "Lisa");
-  Lisa.size = 4;
+  Lisa.size = 3;
   Lisa.hand[0] = 5;
-  Lisa.hand[1] = 0;
-  Lisa.hand[2] = 1;
-  Lisa.hand[3] = 5;
+  Lisa.hand[1] = 8;
+  Lisa.hand[2] = 5;
+
   
   struct player John;
   strcpy(John.name, "John");
-  John.size = 11;
-  John.hand[0] = 0;
-  John.hand[1] = 0;
+  John.size = 3;
+  John.hand[0] = 12;
+  John.hand[1] = 4;
   John.hand[2] = 0;
-  John.hand[3] = 0;
-  John.hand[4] = 1;
-  John.hand[5] = 1;
-  John.hand[6] = 1;
-  John.hand[7] = 1;
-  John.hand[8] = 2;
-  John.hand[9] = 2;
-  John.hand[10] = 2;
   
   struct player Carl;
   strcpy(Carl.name, "Carl");
   Carl.size = 3;
-  Carl.hand[0] = 12;
-  Carl.hand[1] = 12;
-  Carl.hand[2] = 0;
+  Carl.hand[0] = 5;
+  Carl.hand[1] = 0;
+  Carl.hand[2] = 8;
   
   struct player * * people = calloc(sizeof(struct player), 4);
-  people[0] = &Carl;
+  people[0] = &Jeff;
   people[1] = &Lisa;
   people[2] = &John;
-  people[3] = &Jeff;
+  people[3] = &Carl;
   
   int x = 0;
   for(x;x < 4;x++) {
@@ -67,7 +59,7 @@ int main() {
   
   */
   
-  int * deck= Initialize_Deck();
+  int * deck = Initialize_Deck();
   //Print_Deck(deck);
   
   counter = 0;
@@ -86,15 +78,12 @@ int main() {
   
   strcpy(screen, "-----------------------------------------------------\n");
   
-  struct player  * playas = calloc(sizeof(struct player), num_players);
-  for(i = 0; i < num_players; i++){
-    Set_Player(&playas[i]);
+  struct player * * playas = calloc(sizeof(struct player), num_players); 
+  for(int i = 0; i < 4;i++) {
+    playas[i] = calloc(sizeof(struct player), 1);
   }
   
-  
   i = 0;
-  
-  
   
   eternal_socket = server_setup("9001");  
   printf("Waiting for players\n");
@@ -104,13 +93,12 @@ int main() {
     write(client_socket, ports[i], 5);
     listen_socket = server_setup(ports[i]);
     client_socket = server_connect(listen_socket);
-    playas[i].mySock =  listen_socket;
-    playas[i].clySock = client_socket;
-    
+    playas[i] -> mySock =  listen_socket;
+    playas[i] -> clySock = client_socket;
     memset(buffer, 0, BUFFER_SIZE * 8);
-    read(playas[i].clySock, buffer, BUFFER_SIZE * 8);
-    strcpy(playas[i].name, buffer);
-    printf("Just added %s to the game\n", playas[i].name);
+    read(playas[i]->clySock, buffer, BUFFER_SIZE * 8);
+    strcpy(playas[i]->name, buffer);
+    printf("Just added %s to the game\n", playas[i]->name);
     i++;
   }
   
@@ -125,7 +113,7 @@ int main() {
   
   
   for(i = 0; i < num_players; i++){
-      counter = Deal(&playas[i], counter, deck);  
+      counter = Deal(playas[i], counter, deck);  
   }
     
   
@@ -135,38 +123,36 @@ int main() {
       //Screens are prepared
        for(j = 0; j < num_players; j++){
          if(i != j){
-            Print_Hand(&playas[j], &screen);
+            Print_Hand(playas[j], &screen);
          }  
        }
        strcat(screen, "\n\nMy Hand: ");
-       for(j = 0; j < playas[i].size; j++){
-          Print_Card(playas[i].hand[j], &screen);  
+       for(j = 0; j < playas[i]->size; j++){
+          Print_Card(playas[i]->hand[j], &screen);  
        }
        
        
  
-       write(playas[i].clySock, screen, strlen(screen));
+       write(playas[i]->clySock, screen, strlen(screen));
        
        memset(buffer, 0, BUFFER_SIZE * 8);
-       read(playas[i].clySock, buffer, BUFFER_SIZE * 8);
+       read(playas[i]->clySock, buffer, BUFFER_SIZE * 8);
        
        //printf("-->%s<--\n", buffer);
      
-       printf("%s's hand value is %i\n", playas[i].name, Value(&playas[i]));
+       printf("%s's hand value is %i\n", playas[i]->name, Value(playas[i]));
      
        while(!strcmp(buffer, "h")){
          
-         printf("%s chose to hit\n", playas[i].name);
-         counter = Hit(&playas[i], counter, deck);
+         printf("%s chose to hit\n", playas[i]->name);
+         counter = Hit(playas[i], counter, deck);
          
-         
-         
-         Print_Card(playas[i].hand[j++], &screen);
+         Print_Card(playas[i]->hand[j++], &screen);
          
          //TESTING
-         printf("%s's hand value is %i\n", playas[i].name, Value(&playas[i]));
+         printf("%s's hand value is %i\n", playas[i]->name, Value(playas[i]));
          
-         if(Value(&playas[i]) == -1){
+         if(Value(playas[i]) == -1){
             strcat(screen, "YOU BUSTED\n");
             b = 1;
          }
@@ -176,26 +162,30 @@ int main() {
          
          //printf("%s\n", screen);
          
-         write(playas[i].clySock, screen, strlen(screen));
+         write(playas[i]->clySock, screen, strlen(screen));
          
          if (b == 1) {break;}
          
          memset(buffer, 0, BUFFER_SIZE * 8);
-         read(playas[i].clySock, buffer, BUFFER_SIZE * 8);
+         read(playas[i]->clySock, buffer, BUFFER_SIZE * 8);
        }
-       printf("%s chose to stick\n", playas[i].name);
+      
+       if (b == 1) {
+         printf("%s busted\n", playas[i]->name);
+       } else {
+         printf("%s chose to stick\n", playas[i]->name);
+       }
      
        strcpy(screen, "-----------------------------------------------------\n");
   }
 
- /*
-  printf("asdfasdfasdf\n");
-  if(All_Bust(&playas, num_players)) {
+ 
+  if(All_Bust(playas, num_players)) {
     printf("Nobody wins!\n");
   } else {
-    printf("%s is the Winner!\n", Winner(&playas, num_players) -> name);
+    printf("%s is the Winner!\n", Winner(playas, num_players) -> name);
   }
-  */
+  
   
   
   
