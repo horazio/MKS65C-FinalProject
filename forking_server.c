@@ -119,7 +119,7 @@ int main() {
   
   for(i = 0; i < num_players; i++){
     
-    
+    b = 0;
     //Screens are prepared
     for(j = 0; j < num_players; j++){
       if(i != j){
@@ -153,8 +153,8 @@ int main() {
       printf("%s's hand value is %i\n", playas[i]->name, Value(playas[i]));
       
       if(Value(playas[i]) == -1){
-	strcat(screen, "YOU BUSTED\n");
-	b = 1;
+	        strcat(screen, "YOU BUSTED\n");
+	        b = 1;
       }
       
       //strcpy(screenTemp, screen);
@@ -166,8 +166,8 @@ int main() {
       
       if (b == 1) {
 	
-	printf("%s busted\n", playas[i]->name);
-	break;
+	            printf("%s busted\n", playas[i]->name);
+	            break;
       }
       
       memset(buffer, 0, BUFFER_SIZE * 8);
@@ -190,7 +190,9 @@ int main() {
   
   
   
-  
+  while(1){
+
+  }
   
   //flawed debugging code
   //Print_Card(playas[0].hand[0]);
