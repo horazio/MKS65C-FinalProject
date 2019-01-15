@@ -2,7 +2,7 @@
 
 void process(char *s);
 void subserver(int from_client);
-char * ports[] = {"9302", "9303", "9304", "9305", "9306", "9307"};
+char * ports[] = {"9302", "9303", "9304", "9305"};
 int counter;
 
 
@@ -68,10 +68,10 @@ int main() {
 
   int num_players = 4;
   
-  printf("How many players would you like? (2-6)\n");
+  printf("How many players would you like? (2-4)\n");
   fgets(buffer, BUFFER_SIZE * 8, stdin);
   *strchr(buffer, '\n') = 0;
-  while (atoi(buffer) < 2 || atoi(buffer) > 6) {
+  while (atoi(buffer) < 2 || atoi(buffer) > 4) {
     memset(buffer, 0, BUFFER_SIZE * 8);
     printf("Please enter a valid number (2-6)\n");
     fgets(buffer, BUFFER_SIZE * 8, stdin);
