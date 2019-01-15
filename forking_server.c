@@ -2,7 +2,7 @@
 
 void process(char *s);
 void subserver(int from_client);
-char * ports[] = {"9302", "9303", "9304", "9305"};
+char * ports[] = {"9302", "9303", "9304", "9305", "9306", "9307"};
 int counter;
 
 
