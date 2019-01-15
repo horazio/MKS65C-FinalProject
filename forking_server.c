@@ -220,6 +220,11 @@ int main() {
     printf("Nobody wins!\n");
   } else {
     winner = Winner(playas, num_players);
+    // give the winner their money
+    for(i = 0; i < num_players; i++) {
+      winner -> cash += playas[i] -> bet;
+      playas[i] -> bet = 0;
+    }
     printf("%s is the Winner!\n", winner -> name);
   }
   
@@ -228,6 +233,11 @@ int main() {
     memset(screen, 0, BUFFER_SIZE * 8);
     
     if(playas[i] == winner){
+      strcat(screen, "You now have ");
+      char * money = calloc(sizeof(char), 10);
+      itoa(winner->cash, money);
+      strcat(screen, money);
+      strcat(screen, " Cash\n");
       strcat(screen, Print_File("You_Win"));
     }
     else{
@@ -235,7 +245,11 @@ int main() {
         strcat(screen, "Everyone busted, there is no winner!\n");
       }else{
         strcat(screen, winner -> name);
-        strcat(screen, " is the winner\n");
+        strcat(screen, " is the winner and now has ");
+        char * money = calloc(sizeof(char), 10);
+        itoa(winner->cash, money);
+        strcat(screen, money);
+        strcat(screen, " Cash\n");
         strcat(screen, Print_File("You_Lose"));
       }
     }
