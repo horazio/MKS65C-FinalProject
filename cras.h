@@ -35,7 +35,8 @@ struct player {
   int clySock;
   int mySock;
   
-  int money;
+  int cash;
+  int bet;
 };
 
 void Set_Player(struct player *);
@@ -76,8 +77,9 @@ struct player * Winner(struct player * *, int);
 
 int All_Bust(struct player * * , int );
 
-
 void Print_File(char *);
+
+char * Make_Screen(int, struct player * *, int);
 
 
 //From demo

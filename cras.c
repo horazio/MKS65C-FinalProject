@@ -1,77 +1,38 @@
 #include "cras.h"
 
-/*
 
+/* reverse:  reverse string s in place */
+ void reverse(char s[]){
+   //printf("1Dingus code started\n\n");
+     int i, j;
+     char c;
 
-void Print_Deck(int * Deck) {
-  int i = 0;
-  while (i<52){
-    //printf("%d\n", Deck[i]);
-    Print_Card(Deck[i]);
-    //printf("something\n");
-    i++;
-  }
-}
-
-//Number of players in the game (up to 4)
-int Player_Num;
-
-//Player List
-struct player Player_List[4];
-
-//Number of Cards in play
-char Cards_Dealt;
-
-
-//Adds player into game
-void Add_Player(char * player) {
-
-  struct player name;
-  strcpy(name.name, player);
-
-  //if game is full then cant join game
-  if(Player_Num = MAX_PLAYERS) {
-    printf("Too Many Players\n");
-    exit(1);
-  }
-
-  //Assign a number to the player
-  name.num = Player_Num;
-
-  //Insert the player in the list
-  Player_List[name.num] = name;
-  Player_Num++;
-}
-
-//Removes player from game
-// void Remove_Player(struct player name){
-
-//   //Sets position to empty
-//   Player_List[name.num] = NULL;
-
-//   //Moves Players w/ a higher number down a spot
-//   while(name.num < 3) {
-//     Player_List[name.num] = Player_List[name.num++];
-//   }
-
-//   //Sets last spot as open
-//   Player_List[name.num] = NULL;
-//   Player_Num--;
-// }
-
-
-
-
-
-//end the player's turn
-void Stick(struct player PlayerName){
-
+     for (i = 0, j = strlen(s)-1; i<j; i++, j--) {
+         c = s[i];
+         s[i] = s[j];
+         s[j] = c;
+     }
+   //printf("1Dingus code ended\n\n");
 }
 
 
+void itoa(int n, char s[]){
+     //printf("0Dingus code started\n\n");
+     int i, sign;
 
+     if ((sign = n) < 0)  /* record sign */
+         n = -n;          /* make n positive */
+     i = 0;
+     do {       /* generate digits in reverse order */
+         s[i++] = n % 10 + '0';   /* get next digit */
+     } while ((n /= 10) > 0);     /* delete it */
+     if (sign < 0)
+         s[i++] = '-';
+     s[i] = '\0';
+     reverse(s);
+     //printf("0Dingus code ended\n\n");
+}  
 
-*/
 
 //The player takes hit
 int Hit(struct player * jeff, int counter, int * Deck){
@@ -83,20 +44,19 @@ int Hit(struct player * jeff, int counter, int * Deck){
 
 //Prints a player's hand
 void Print_Hand(struct player * jeff, char * * ans) {
-  strcat(*ans, jeff -> name);
-  strcat(*ans, ": ");
+  //strcat(*ans, jeff -> name);
+  //strcat(*ans, ": ");
 
   if(jeff -> size == 0){
-    strcat(*ans, "Empty\n");
+    strcat(*ans, "Empty");
   }
   
   Print_Card(jeff -> hand[0], ans);
   
   int i;
   for(i = 1; i < jeff -> size; i++){
-    strcat(*ans, "* ");
+    strcat(*ans, "*");
   }
-  strcat(*ans, "\n");
 }
 
 int Value(struct player * jeff) {
@@ -133,7 +93,7 @@ int Value(struct player * jeff) {
 } 
 
 
-//Prints one card from card ID#
+//it cats
 void Print_Card(char card, char * * ans){
   char suit = card/13;
   char num  = card%13;
@@ -152,6 +112,7 @@ void Print_Card(char card, char * * ans){
 //sets the originial values of player
 void Set_Player(struct player * jeff){
   jeff = calloc(sizeof(struct player), 1);
+  jeff -> cash = 100;
 }
 
 
@@ -251,4 +212,60 @@ void Print_File(char * file) {
   char buffer[256 * 16];
   read(fd, buffer, 256 * 16);
   printf("%s\n", buffer);  
+}
+
+
+char * Make_Screen(int me, struct player * * playas, int num_players) {
+  char * screen = calloc(sizeof(char), 8 * BUFFER_SIZE);
+  strcpy(screen, "Name\t\tHand\t\tBet\t\tCash\t\t\n");
+  strcat(screen, "---------------------------------------------------------------\n");
+  char money[10]; // to hold numbers
+  int i = 0;
+  
+  //printf("000000\n\n");
+  for(i; i < num_players; i++) {
+    if(i != me) { // if this player isn't me
+      strcat(screen, playas[i]->name);     // add player name to screen
+      strcat(screen, ":");                 // add ':' to the screen
+      strcat(screen, "\t\t");              // tab spacing
+      Print_Hand(playas[i], &screen);      // add player's hand to screen
+      strcat(screen, "\t\t");              // tab spacing
+      //strcat(screen, "Bet: ");             // add 'Bet:' to screen
+      itoa(playas[i]->bet,money);     // convert the bet to a string
+      strcat(screen, money);               // add the bet amount to the screen
+      strcat(screen, "\t\t");              // tab spacing
+      //strcat(screen, "Cash: ");            // add 'Cash:" to screen
+      memset(money, 0, 10);            // resetting char[]
+      itoa(playas[i]->cash,money);    // convert the cash to a string
+      strcat(screen, money);               // add the cash to screen
+      strcat(screen, "\n");                // add a newline
+    }
+  }
+  //printf("11111\n\n");
+  
+  strcat(screen, "---------------------------------------------------------------\n");
+  
+  memset(money, 0, 10);                // resetting char[]
+  strcat(screen, "\n\n");              // make space
+  
+  // now add me
+  strcat(screen, "Me:");               // add 'Me:' to the screen
+  strcat(screen, "\t\t");              // tab spacing
+  for(i=0; i < playas[me]->size; i++) {
+    Print_Card(playas[me]->hand[i], &screen); // add each card of my hand to the screen
+  }                                    // add my hand to screen
+  strcat(screen, "\t\t");              // tab spacing
+  //strcat(screen, "Bet: ");             // add 'Bet:' to screen
+  itoa(playas[me]->bet,money);    // convert the bet to a string
+  strcat(screen, money);               // add the bet amount to the screen
+  strcat(screen, "\t\t");              // tab spacing
+  //strcat(screen, "Cash: ");            // add 'Cash:" to screen
+  memset(money, 0, 10);            // resetting char[]
+  itoa(playas[me]->cash,money);   // convert the cash to a string
+  strcat(screen, money);               // add the cash to screen
+  strcat(screen, "\n");                // add a newline
+  
+  strcat(screen, "---------------------------------------------------------------\n");
+  //printf("22222\n\n");
+  return screen;
 }

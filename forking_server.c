@@ -73,6 +73,7 @@ int main() {
   int i = 0; // for incremantation
   int j = 0; // for incrementation
   int b = 0; //for bust/break
+  int bet = 5;
   
   char * screen = calloc(sizeof(char), BUFFER_SIZE * 8);
   
@@ -84,9 +85,11 @@ int main() {
   
   strcpy(screen, "-----------------------------------------------------\n");
   
+  //Initializing the player
   struct player * * playas = calloc(sizeof(struct player), num_players); 
   for(int i = 0; i < 4;i++) {
     playas[i] = calloc(sizeof(struct player), 1);
+    playas[i] -> cash = 100;
   }
   
   i = 0;
@@ -112,9 +115,6 @@ int main() {
   deck = Shuffle_Deck(deck);
   
   
-  
-  //Print_Deck(deck);
-  
   //Deal to each Player in num_players
   
   
@@ -123,55 +123,66 @@ int main() {
   }
   
   
+  //send a screen to everyone
   for(i = 0; i < num_players; i++){
-    
-    b = 0;
-    //Screens are prepared
-    for(j = 0; j < num_players; j++){
-      if(i != j){
-	Print_Hand(playas[j], &screen);
-      }  
-    }
-    strcat(screen, "\n\nMy Hand: ");
-    for(j = 0; j < playas[i]->size; j++){
-      Print_Card(playas[i]->hand[j], &screen);  
-    }
-    
-    
-    
+    strcpy(screen, Make_Screen(i, playas, num_players));
     write(playas[i]->clySock, screen, strlen(screen));
-    
+  }
+  
+  //printf("SENT SCREEN TO ALL PLAYERS\n\n\n")
+  
+  //reading the bet for all players
+  for(i = 0; i < num_players; i++){
     memset(buffer, 0, BUFFER_SIZE * 8);
     read(playas[i]->clySock, buffer, BUFFER_SIZE * 8);
     
-    //printf("-->%s<--\n", buffer);
+    bet = atoi(buffer);
+    
+    if(bet > playas[i] -> cash){
+        bet = playas[i] -> cash;
+    }
+    
+    playas[i] -> bet = bet;
+    playas[i] -> cash -= bet;
+    printf("%s chose to bet %i, and has %i remaining\n", playas[i] -> name, bet, playas[i] -> cash);
+  }
+  
+  //writing screen to all players (after the bets are in)
+  for(i = 0; i < num_players; i++){
+    strcpy(screen, Make_Screen(i, playas, num_players));
+    write(playas[i]->clySock, screen, strlen(screen));
+  }
+  
+  //asking clients for action (one-by-one)
+  for(i = 0; i < num_players; i++){
+    
+    //writing screen again (one-by-one)
+    strcpy(screen, Make_Screen(i, playas, num_players));
+    write(playas[i]->clySock, screen, strlen(screen));
     
     printf("%s's hand value is %i\n", playas[i]->name, Value(playas[i]));
     
+    b = 0;
+    
+    memset(buffer, 0, BUFFER_SIZE * 8);
+    read(playas[i]->clySock, buffer, BUFFER_SIZE * 8);
+    /////---------
     while(!strcmp(buffer, "h")){
-      
       printf("%s chose to hit\n", playas[i]->name);
       counter = Hit(playas[i], counter, deck);
       
-      Print_Card(playas[i]->hand[ playas[i] -> size - 1 ], &screen);
-      
-      //TESTING
       printf("%s's hand value is %i\n", playas[i]->name, Value(playas[i]));
+      
+      strcpy(screen, Make_Screen(i, playas, num_players));
       
       if(Value(playas[i]) == -1){
 	        strcat(screen, "YOU BUSTED");
 	        b = 1;
       }
       
-      //strcpy(screenTemp, screen);
-      //strcat(screen, "\n-----------------------------------------------------\n");
-      
-      //printf("%s\n", screen);
-      
       write(playas[i]->clySock, screen, strlen(screen));
       
       if (b == 1) {
-	
 	            printf("%s busted\n", playas[i]->name);
 	            break;
       }
@@ -184,9 +195,11 @@ int main() {
       printf("%s chose to stick\n", playas[i]->name);
     }
     
-    strcpy(screen, "-----------------------------------------------------\n");
   }
   
+  while(1){
+
+  }
   
   if(All_Bust(playas, num_players)) {
     printf("Nobody wins!\n");
