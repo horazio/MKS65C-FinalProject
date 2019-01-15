@@ -90,7 +90,6 @@ int main(int argc, char **argv) {
     printf("%s\n", buffer);
     
     if(buffer[strlen(buffer) - 1] == 'D'){
-        printf("YOU LOSE\n");
         break;
     }else{  
       printf("Would you like to hit or stick? (h/s)\n"); 

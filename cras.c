@@ -207,11 +207,12 @@ int All_Bust(struct player * * playas, int num_players) {
 }
 
 
-void Print_File(char * file) {
+char * Print_File(char * file) {
   int fd = open(file, O_RDONLY);
-  char buffer[256 * 16];
+  char * buffer = calloc(sizeof(char), 256 * 16);
+  memset(buffer, 0, 256 * 16);
   read(fd, buffer, 256 * 16);
-  printf("%s\n", buffer);  
+  return buffer; 
 }
 
 

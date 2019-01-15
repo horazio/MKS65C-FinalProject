@@ -60,7 +60,7 @@ int main() {
     
   */
   printf("\033[H\033[J");
-  Print_File("BlackJack.txt");
+  printf("%s\n", Print_File("BlackJack.txt"));
   
   int * deck = Initialize_Deck();
   //Print_Deck(deck);
@@ -95,7 +95,8 @@ int main() {
   i = 0;
   
   eternal_socket = server_setup("9301");  
-  printf("Waiting for players\n");
+  printf("%s\n", Print_File("Loading"));
+
   while(i < num_players){
     
     client_socket = server_connect(eternal_socket);
@@ -209,7 +210,7 @@ int main() {
     memset(screen, 0, BUFFER_SIZE * 8);
     
     if(playas[i] == winner){
-      strcat(screen, "YOU WIN!!");
+      strcat(screen, Print_File("You_Win"));
     }
     else{
       if(All_Bust(playas, num_players)){
@@ -217,15 +218,16 @@ int main() {
       }else{
         strcat(screen, winner -> name);
         strcat(screen, " is the winner\n");
+        strcat(screen, Print_File("You_Lose"));
       }
     }
     write(playas[i] -> clySock, screen, strlen(screen));
   }
   
   
-  while(1){
+  //while(1){
 
-  }
+  //}
   
   //flawed debugging code
   //Print_Card(playas[0].hand[0]);

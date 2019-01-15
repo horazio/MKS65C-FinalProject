@@ -77,7 +77,7 @@ struct player * Winner(struct player * *, int);
 
 int All_Bust(struct player * * , int );
 
-void Print_File(char *);
+char * Print_File(char *);
 
 char * Make_Screen(int, struct player * *, int);
 
