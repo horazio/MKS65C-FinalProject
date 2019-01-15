@@ -197,10 +197,6 @@ int main() {
     
   }
   
-  while(1){
-
-  }
-  
   if(All_Bust(playas, num_players)) {
     printf("Nobody wins!\n");
   } else {

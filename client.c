@@ -115,7 +115,11 @@ int main(int argc, char **argv) {
     
   }
   ///////-------------2---------------
-  
+  if(!strcmp(decisionBuffer, "s")){
+      printf("\033[H\033[J");
+      printf("%s\n", buffer);
+      printf("YOU STUCK\n");
+  }
   printf("\nWaiting for other players and determining winner...\n\n");
   
   memset(buffer, 0, BUFFER_SIZE * 8);
