@@ -39,6 +39,8 @@ struct player {
   int bet;
 };
 
+void itoa(int, char *);
+
 void Set_Player(struct player *);
 
 void Add_Player();

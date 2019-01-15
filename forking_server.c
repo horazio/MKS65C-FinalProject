@@ -59,14 +59,35 @@ int main() {
     printf(">%s< is the winner!\n", Winner(people, 4)->name);
     
   */
+  
+  
   printf("\033[H\033[J");
   printf("%s\n", Print_File("BlackJack.txt"));
+  
+  char * buffer = calloc(sizeof(char), BUFFER_SIZE * 8);
+
+  int num_players = 4;
+  
+  printf("How many players would you like? (2-6)\n");
+  fgets(buffer, BUFFER_SIZE * 8, stdin);
+  *strchr(buffer, '\n') = 0;
+  while (atoi(buffer) < 2 || atoi(buffer) > 6) {
+    memset(buffer, 0, BUFFER_SIZE * 8);
+    printf("Please enter a valid number (2-6)\n");
+    fgets(buffer, BUFFER_SIZE * 8, stdin);
+    *strchr(buffer, '\n') = 0;
+  } 
+  num_players = atoi(buffer);
+  memset(buffer, 0, BUFFER_SIZE * 8);
+  
+ // printf("%i\n", num_players);
+  
+  //while(1){}
   
   int * deck = Initialize_Deck();
   //Print_Deck(deck);
   
   counter = 0;
-  int num_players = 4;
   int eternal_socket;
   int listen_socket;
   int client_socket;
@@ -76,9 +97,6 @@ int main() {
   int bet = 5;
   
   char * screen = calloc(sizeof(char), BUFFER_SIZE * 8);
-  
-  char * buffer = calloc(sizeof(char), BUFFER_SIZE * 8);
-  
   
   struct player * winner;
   //char * screenTemp = malloc(sizeof(char) * BUFFER_SIZE * 8);
