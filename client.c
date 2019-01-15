@@ -1,5 +1,15 @@
 #include "cras.h"
 
+
+char * Print_File(char * file) {
+  int fd = open(file, O_RDONLY);
+  char * buffer = calloc(sizeof(char), 256 * 16);
+  memset(buffer, 0, 256 * 16);
+  read(fd, buffer, 256 * 16);
+  return buffer; 
+}
+
+
 int main(int argc, char **argv) {
   printf("\033[H\033[J");
   printf("%s\n", Print_File("BlackJack.txt"));
