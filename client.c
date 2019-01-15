@@ -33,6 +33,7 @@ int main(int argc, char **argv) {
   printf("Waiting for others to join...\n");
   
   memset(buffer, 0, BUFFER_SIZE * 8);
+  printf("\033[H\033[J");
   read(server_socket, buffer, BUFFER_SIZE * 8);
   printf("%s\n", buffer);
   
