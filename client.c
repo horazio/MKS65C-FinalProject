@@ -1,6 +1,10 @@
 #include "cras.h"
 
 int main(int argc, char **argv) {
+  printf("\033[H\033[J");
+  printf("%s\n", Print_File("BlackJack.txt"));
+  printf("%s\n", Print_File("Loading"));
+
   
   
   struct player me;
