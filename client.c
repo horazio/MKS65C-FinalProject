@@ -23,18 +23,18 @@ int main(int argc, char **argv) {
   char decisionBuffer[256];
   
   if (argc == 2){
-    //server_socket = client_setup( argv[1]);
+    server_socket = client_setup( argv[1], "9301");
   }
-  
   else{
     server_socket = client_setup( TEST_IP, "9301" );
-    //printf("bound to the 9301 port\n");
+    //printf("bound to the 9301 port\n"); 
+  }
     read(server_socket, buffer, BUFFER_SIZE * 8 );
     //printf("received, '%s'\n", buffer);
     sleep(.5);
     server_socket = client_setup(TEST_IP, buffer);
     //printf("bound to the other port\n");
-  }
+  
   
   printf("\033[H\033[J");
   printf("What is your nickname? (Max 6 characters)\n");
