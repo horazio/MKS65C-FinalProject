@@ -18,21 +18,28 @@ int main(int argc, char **argv) {
   
   
   struct player me;
+  char * IP;
   int server_socket;
   char * buffer = calloc(sizeof(char), BUFFER_SIZE * 8);
   char decisionBuffer[256];
-  
+   //printf("before connecting\n\n");
   if (argc == 2){
-    server_socket = client_setup( argv[1], "9301");
+    IP = argv[1];
+    //printf("Connected\n\n");
   }
   else{
-    server_socket = client_setup( TEST_IP, "9301" );
+    IP = TEST_IP;
     //printf("bound to the 9301 port\n"); 
   }
+    
+    server_socket = client_setup( IP, "9301" );
+    //printf("before reading\n");
     read(server_socket, buffer, BUFFER_SIZE * 8 );
     //printf("received, '%s'\n", buffer);
-    sleep(.5);
-    server_socket = client_setup(TEST_IP, buffer);
+    //printf("after\n\n");
+    sleep(2);
+
+    server_socket = client_setup(IP, buffer);
     //printf("bound to the other port\n");
   
   
